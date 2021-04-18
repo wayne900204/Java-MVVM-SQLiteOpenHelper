@@ -1,4 +1,4 @@
-package com.example.sqlmvvm.repositorys;
+package com.example.sqlmvvm.repositories;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,7 +15,7 @@ public class DataBaseRepository {
     private static final String TAG = "Repository";
     Context context;
     UserDBHelper userDBHelper;
-    private LiveData<List<User>> myLiveData;
+    private List<User> myLiveData;
 
     public DataBaseRepository(Context context) {
         this.context = context;
@@ -23,7 +23,7 @@ public class DataBaseRepository {
         myLiveData = userDBHelper.getAllData();
     }
 
-    public LiveData<List<User>> getAllData() {
+    public List<User> getAllData() {
         myLiveData = userDBHelper.getAllData();
         return myLiveData;
     }

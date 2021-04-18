@@ -14,9 +14,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.sqlmvvm.R;
-import com.example.sqlmvvm.repositorys.DataBaseRepository;
+import com.example.sqlmvvm.repositories.DataBaseRepository;
 import com.example.sqlmvvm.models.User;
 
 import java.text.SimpleDateFormat;
@@ -25,8 +26,10 @@ import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
     private DataBaseRepository dataBaseRepository;
-    private LiveData<List<User>> myLiveData;
+    private List<User> myLiveData;
     private String TAG = getClass().getSimpleName();
+    MutableLiveData<List<User>> resultList = new MutableLiveData<List<User>>();
+
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -36,30 +39,34 @@ public class MainViewModel extends AndroidViewModel {
 
     public LiveData<List<User>> getAllData() {
         myLiveData = dataBaseRepository.getAllData();
-        return myLiveData;
+        resultList.postValue(myLiveData);
+        return resultList;
     }
 
     public void insert(User user) {
         dataBaseRepository.insertData(user);
         myLiveData = dataBaseRepository.getAllData();
+        resultList.postValue(myLiveData);
     }
 
-    public String getTime1() {
+    public String getTime() {
         long time = System.currentTimeMillis();//long now = android.os.SystemClock.uptimeMillis();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date d1 = new Date(time);
-        String t1 = format.format(d1);
-        return t1;
+        Date date = new Date(time);
+        String format1 = format.format(date);
+        return format1;
     }
 
     public void deleteData(String id) {
         dataBaseRepository.deleteData(id);
         myLiveData = dataBaseRepository.getAllData();
+        resultList.postValue(myLiveData);
     }
 
     public void updateData(User user) {
         dataBaseRepository.updateData(user);
         myLiveData = dataBaseRepository.getAllData();
+        resultList.postValue(myLiveData);
     }
 
     public void showAddDialog(Context context) {
@@ -80,7 +87,7 @@ public class MainViewModel extends AndroidViewModel {
                     User user = new User(
                             firstName.getText().toString(),
                             lastName.getText().toString(),
-                            getTime1());
+                            getTime());
                     insert(user);
                     dialog.dismiss();
                 } else {
@@ -119,7 +126,7 @@ public class MainViewModel extends AndroidViewModel {
                     User user = new User(dataModel.getID()
                             , firstName.getText().toString()
                             , lastName.getText().toString()
-                            , getTime1());
+                            , getTime());
                     updateData(user);
                     dialog.dismiss();
                 } else {

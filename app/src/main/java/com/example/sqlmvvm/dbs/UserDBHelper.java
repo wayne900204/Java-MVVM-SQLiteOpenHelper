@@ -18,7 +18,7 @@ import java.util.List;
 
 public class UserDBHelper extends SQLiteOpenHelper {
 
-    MutableLiveData<List<User>> resultList = new MutableLiveData<List<User>>();
+//    MutableLiveData<List<User>> resultList = new MutableLiveData<List<User>>();
     public static String DATABASE_NAME = "User";//資料整個庫的名稱
     private static final String TAG = "UserSql";
     public static int version = 1;//版本
@@ -56,7 +56,6 @@ public class UserDBHelper extends SQLiteOpenHelper {
     }
 
     public long updateData(User user) {//更新資料用的
-        Log.d(TAG, "updateData: " + user.getFirstNanme() + user.getID());
         ContentValues cv = new ContentValues();
         cv.put("FirstName", user.getFirstNanme()); //這邊的字串要跟AddItem那邊的Key一樣
         cv.put("LastName", user.getLastName());
@@ -74,8 +73,7 @@ public class UserDBHelper extends SQLiteOpenHelper {
             return true;
     }
 
-    public LiveData<List<User>> getAllData() {
-        Log.d(TAG, "getDataContact2: " + "aa");
+    public List<User> getAllData() {
         String sql = " SELECT * FROM " + UserName + " ORDER BY ID ASC ";
         //從UserName裡面取資料，並排序，由小到大。
         Cursor c = getWritableDatabase().rawQuery(sql, null);
@@ -83,21 +81,19 @@ public class UserDBHelper extends SQLiteOpenHelper {
 
         while (c.moveToNext()) {
             try {
-                String ID = c.getInt(0) + "";
-                String FirstName = c.getString(1);
-                String LastName = c.getString(2);
-                String Time = c.getString(3);
-                User user = new User(ID, FirstName, LastName, Time);
+                String id = c.getInt(0) + "";
+                String firstName = c.getString(1);
+                String lastName = c.getString(2);
+                String time = c.getString(3);
+                User user = new User(id, firstName, lastName, time);
                 myList.add(user);
             } catch (Exception e) {
-                Log.d(TAG, "getDataContact2: " + e.toString());
+
                 e.printStackTrace();
             }
         }
 
         c.close();
-        resultList.postValue(myList);
-        Log.d(TAG, "getDataContact2: ");
-        return resultList;
+        return myList;
     }
 }

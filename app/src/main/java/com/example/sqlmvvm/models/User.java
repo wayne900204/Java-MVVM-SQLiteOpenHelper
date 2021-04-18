@@ -1,6 +1,6 @@
 package com.example.sqlmvvm.models;
 
-public class UserModel {
+public class User {
     private String id;
     private String firstNanme;
     private String lastName;
@@ -18,18 +18,18 @@ public class UserModel {
     public String getTime() { return time; }
     public void setTime(String value) { this.time = value; }
 
-    public UserModel(String id, String firstNanme, String lastName, String time){
+    public User(String id, String firstNanme, String lastName, String time){
         this.id = id;
         this.firstNanme = firstNanme;
         this.lastName = lastName;
         this.time = time;
     }
-    public UserModel(String firstNanme,String lastName,String time){
+    public User(String firstNanme, String lastName, String time){
         this.firstNanme = firstNanme;
         this.lastName = lastName;
         this.time = time;
     }
-    public UserModel(){}
-    public UserModel(String id){}
+    public User(){}
+    public User(String id){}
 }
 

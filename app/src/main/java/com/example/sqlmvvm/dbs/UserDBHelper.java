@@ -11,14 +11,14 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.sqlmvvm.models.UserModel;
+import com.example.sqlmvvm.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDBHelper extends SQLiteOpenHelper {
 
-    MutableLiveData<List<UserModel>> resultList = new MutableLiveData<List<UserModel>>();
+    MutableLiveData<List<User>> resultList = new MutableLiveData<List<User>>();
     public static String DATABASE_NAME = "User";//資料整個庫的名稱
     private static final String TAG = "UserSql";
     public static int version = 1;//版本
@@ -45,23 +45,23 @@ public class UserDBHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public long InsertData(UserModel userModel) {
+    public long InsertData(User user) {
         //ContentValues以鍵值對的形式存放資料
         ContentValues cv = new ContentValues();
-        cv.put("FirstName", userModel.getFirstNanme()); //這邊的字串要跟AddItem那邊的Key一樣
-        cv.put("LastName", userModel.getLastName());
-        cv.put("Time", userModel.getTime());
+        cv.put("FirstName", user.getFirstNanme()); //這邊的字串要跟AddItem那邊的Key一樣
+        cv.put("LastName", user.getLastName());
+        cv.put("Time", user.getTime());
         long date = getWritableDatabase().insert(UserName, null, cv);
         return date;
     }
 
-    public long updateData(UserModel userModel) {//更新資料用的
-        Log.d(TAG, "updateData: " + userModel.getFirstNanme() + userModel.getID());
+    public long updateData(User user) {//更新資料用的
+        Log.d(TAG, "updateData: " + user.getFirstNanme() + user.getID());
         ContentValues cv = new ContentValues();
-        cv.put("FirstName", userModel.getFirstNanme()); //這邊的字串要跟AddItem那邊的Key一樣
-        cv.put("LastName", userModel.getLastName());
-        cv.put("Time", userModel.getTime());
-        long update = getWritableDatabase().update(UserName, cv, "ID=" + userModel.getID(), null);
+        cv.put("FirstName", user.getFirstNanme()); //這邊的字串要跟AddItem那邊的Key一樣
+        cv.put("LastName", user.getLastName());
+        cv.put("Time", user.getTime());
+        long update = getWritableDatabase().update(UserName, cv, "ID=" + user.getID(), null);
         return update;
     }
 
@@ -74,12 +74,12 @@ public class UserDBHelper extends SQLiteOpenHelper {
             return true;
     }
 
-    public LiveData<List<UserModel>> getAllData() {
+    public LiveData<List<User>> getAllData() {
         Log.d(TAG, "getDataContact2: " + "aa");
         String sql = " SELECT * FROM " + UserName + " ORDER BY ID ASC ";
         //從UserName裡面取資料，並排序，由小到大。
         Cursor c = getWritableDatabase().rawQuery(sql, null);
-        ArrayList<UserModel> myList = new ArrayList<>();
+        ArrayList<User> myList = new ArrayList<>();
 
         while (c.moveToNext()) {
             try {
@@ -87,8 +87,8 @@ public class UserDBHelper extends SQLiteOpenHelper {
                 String FirstName = c.getString(1);
                 String LastName = c.getString(2);
                 String Time = c.getString(3);
-                UserModel userModel = new UserModel(ID, FirstName, LastName, Time);
-                myList.add(userModel);
+                User user = new User(ID, FirstName, LastName, Time);
+                myList.add(user);
             } catch (Exception e) {
                 Log.d(TAG, "getDataContact2: " + e.toString());
                 e.printStackTrace();

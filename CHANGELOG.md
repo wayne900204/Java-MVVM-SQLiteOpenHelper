@@ -9,3 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.1] - 2021-04-18
 ### Added
 - SQLiteOpenHelper with CRUD in Android Studio include Java and use MVVM architecture.
+
+## [0.0.2] - 2021-04-19
+### Added
+- AdapterView Coding Style
